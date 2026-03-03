@@ -2,29 +2,25 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Clone Code') {
+        stage('Checkout') {
             steps {
+                echo 'Cloning Code from GitHub...'
                 checkout scm
             }
         }
-
+        
         stage('Build') {
             steps {
-                sh 'ls -la'
+                echo 'Building Project...'
+                bat 'dir' 
             }
         }
 
         stage('Test') {
             steps {
-                sh 'if [ -f index.html ]; then echo "Test Passed"; else exit 1; fi'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'mkdir -p /var/www/html/student-portal'
-                sh 'cp -r * /var/www/html/student-portal/'
+                echo 'Testing index.html...'
+                // Windows साठी 'if exist' कमांड
+                bat 'if exist index.html (echo "Test Passed") else (echo "Test Failed" && exit 1)'
             }
         }
     }
