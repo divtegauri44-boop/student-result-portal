@@ -2,24 +2,29 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+
+        stage('Clone Code') {
             steps {
-                echo 'Checking out code from Repository...'
+                checkout scm
             }
         }
+
         stage('Build') {
             steps {
-                echo 'Building the Student Result Portal...'
+                sh 'ls -la'
             }
         }
+
         stage('Test') {
             steps {
-                echo 'Running Tests...'
+                sh 'if [ -f index.html ]; then echo "Test Passed"; else exit 1; fi'
             }
         }
+
         stage('Deploy') {
             steps {
-                echo 'Deploying Application...'
+                sh 'mkdir -p /var/www/html/student-portal'
+                sh 'cp -r * /var/www/html/student-portal/'
             }
         }
     }
